@@ -18,67 +18,6 @@ public class User {
     private String phone_number;
     private String password;
 
-    @ManyToMany
-    @JoinTable(
-            name="user_locations",
-            joinColumns=@JoinColumn(name="user_id"),
-            inverseJoinColumns=@JoinColumn(name="location_id")
-    )
-    private List<Location> locations;
-
-    // Liste des tests effectués par les users
-    @OneToMany(mappedBy = "user")
-    private List<DoTest> listTest;
-
-    // Liste des Covids positifs
-    @OneToMany(mappedBy = "user")
-    private List<HaveCovid> listCovided;
-
-    /*@OneToMany(mappedBy = "user")
-    private List<SendWarning> listWarningSend;
-
-    @OneToMany(mappedBy = "user")
-    private List<SendWarning> listWarningReceived;
-*/
-    public List<Location> getLocations() {
-        return locations;
-    }
-
-    public void setLocations(List<Location> locations) {
-        this.locations = locations;
-    }
-
-    public List<DoTest> getListTest() {
-        return listTest;
-    }
-
-    public void setListTest(List<DoTest> listTest) {
-        this.listTest = listTest;
-    }
-
-    public List<HaveCovid> getListCovided() {
-        return listCovided;
-    }
-
-    public void setListCovided(List<HaveCovid> listCovided) {
-        this.listCovided = listCovided;
-    }
-
-  /*  public List<SendWarning> getListWarningSend() {
-        return listWarningSend;
-    }
-
-    public void setListWarningSend(List<SendWarning> listWarningSend) {
-        this.listWarningSend = listWarningSend;
-    }
-
-    public List<SendWarning> getListWarningReceived() {
-        return listWarningReceived;
-    }
-
-    public void setListWarningReceived(List<SendWarning> listWarningReceived) {
-        this.listWarningReceived = listWarningReceived;
-    }*/
 
     public long getUser_id() {
         return user_id;
