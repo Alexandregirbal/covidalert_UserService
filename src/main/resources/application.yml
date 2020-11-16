@@ -25,7 +25,7 @@ keycloak:
   bearer-only: true
   security-constraints[0]:
     security-collections[0]:
-      patterns[0]: /covidalert/api/users/*
+      patterns[0]: /covidalert/api/*
     securityCollections[0]:
       methods[0]: GET
       methods[1]: PUT
