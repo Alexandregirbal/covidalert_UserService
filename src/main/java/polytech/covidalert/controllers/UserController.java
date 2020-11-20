@@ -39,7 +39,7 @@ public class UserController {
     @RequestMapping("{email}")
     public User getUserByEmail(@PathVariable String email) {
         if ( userRepository.findByEmail(email) == null){
-            throw new ResourceNotFoundException(HttpStatus.NOT_FOUND, "User with email " +email+ " not found.");
+            throw new ResourceNotFoundException(HttpStatus.INTERNAL_SERVER_ERROR, "User with email " +email+ " not found.");
         }
         return userRepository.findByEmail(email);
     }
@@ -48,7 +48,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public User create(@RequestBody final User user) {
         if ( userRepository.findByEmail(user.getEmail()) != null){
-            throw new ResourceAlreadyExistsException(HttpStatus.NOT_FOUND, "User with email " + user.getEmail()+ " already exist.");
+            throw new ResourceAlreadyExistsException(HttpStatus.INTERNAL_SERVER_ERROR, "User with email " + user.getEmail()+ " already exist.");
         }
         return userRepository.saveAndFlush(user);
     }
@@ -71,7 +71,7 @@ public class UserController {
             return userRepository.saveAndFlush(existingUser);
         }
         else{
-            throw new FormNotCompletedException(HttpStatus.NOT_FOUND, "Form not fully completed");
+            throw new FormNotCompletedException(HttpStatus.INTERNAL_SERVER_ERROR, "Form not fully completed");
         }
     }
 }

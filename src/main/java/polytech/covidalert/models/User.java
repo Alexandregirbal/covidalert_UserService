@@ -3,6 +3,7 @@ package polytech.covidalert.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity(name="users")
@@ -15,9 +16,17 @@ public class User {
     private String first_name;
     private String last_name;
     private String email;
+    private Date birthday;
     private String phone_number;
     private String password;
 
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
 
     public long getUser_id() {
         return user_id;
