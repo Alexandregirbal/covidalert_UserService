@@ -2,17 +2,14 @@ package polytech.covidalert.controllers;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.gson.GsonProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import polytech.covidalert.exception.FormNotCompletedException;
 import polytech.covidalert.exception.ResourceAlreadyExistsException;
 import polytech.covidalert.exception.ResourceNotFoundException;
 import polytech.covidalert.models.User;
 import polytech.covidalert.models.UserRepository;
 
-import javax.transaction.Transactional;
 import java.util.List;
 
 @RestController

@@ -3,9 +3,10 @@ package polytech.covidalert.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
-@Entity(name="users")
+@Entity (name="users")
 @Access(AccessType.FIELD)
 @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class User {
@@ -14,11 +15,25 @@ public class User {
     private long user_id ;
     private String first_name;
     private String last_name;
+    private String birthday;
     private String email;
     private String phone_number;
     private String password;
 
+    public User(String first_name, String last_name, String birthday,  String email, String phone_number, String password) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.birthday = birthday;
+        this.email = email;
+        this.phone_number = phone_number;
+        this.password = password;
+    }
+    public User (){
 
+    }
+
+    public String getBirthday() { return birthday;}
+    public void setBirthday(String birthday) {  this.birthday = birthday;}
     public long getUser_id() {
         return user_id;
     }

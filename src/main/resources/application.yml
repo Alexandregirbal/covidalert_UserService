@@ -6,9 +6,9 @@ app :
 
 spring :
   datasource :
-    url : ${DB_URL}
-    username : ${DB_USER}
-    password : ${DB_PASSWORD}
+    url : "jdbc:postgresql://localhost:5432/covidAlert"
+    username : "postgres"
+    password : "pgadmin"
   jpa :
     database-platform : org.hibernate.dialect.PostgreSQLDialect
     hibernate :
@@ -21,7 +21,7 @@ keycloak:
   resource : api
   public-client: false
   credentials:
-    secret : d1f29e18-54dd-402d-b990-203f776d8778
+    secret : 0b061108-9a26-4c86-9758-722f552774ea
   bearer-only: true
   security-constraints[0]:
     security-collections[0]:
