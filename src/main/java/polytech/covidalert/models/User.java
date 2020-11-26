@@ -17,11 +17,20 @@ public class User {
     private String last_name;
     private String birthday;
     private String email;
-    private Date birthday;
     private String phone_number;
     private String password;
 
     public User(String first_name, String last_name, String birthday,  String email, String phone_number, String password) {
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.birthday = birthday;
+        this.email = email;
+        this.phone_number = phone_number;
+        this.password = password;
+    }
+
+    public User(long id,String first_name, String last_name, String birthday,  String email, String phone_number, String password) {
+        this.user_id = id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.birthday = birthday;

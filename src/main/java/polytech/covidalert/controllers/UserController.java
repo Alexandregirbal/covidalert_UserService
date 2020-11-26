@@ -3,6 +3,7 @@ package polytech.covidalert.controllers;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import polytech.covidalert.exception.FormNotCompletedException;
 import polytech.covidalert.exception.ResourceAlreadyExistsException;
@@ -17,6 +18,7 @@ import java.util.List;
 public class UserController {
     @Autowired
     private UserRepository userRepository;
+
 
     @GetMapping
     public List<User> list() {
@@ -43,11 +45,14 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public User create(@RequestBody final User user) {
         if ( userRepository.findByEmail(user.getEmail()) != null){
             throw new ResourceAlreadyExistsException(HttpStatus.INTERNAL_SERVER_ERROR, "User with email " + user.getEmail()+ " already exist.");
         }
-        return userRepository.saveAndFlush(user);
+        System.out.println(user.toString());
+        return user;
+       // return userRepository.saveAndFlush(user);
     }
 
     @RequestMapping(value = "{email}",method = RequestMethod.DELETE)
