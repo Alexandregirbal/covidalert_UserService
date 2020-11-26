@@ -50,9 +50,7 @@ public class UserController {
         if ( userRepository.findByEmail(user.getEmail()) != null){
             throw new ResourceAlreadyExistsException(HttpStatus.INTERNAL_SERVER_ERROR, "User with email " + user.getEmail()+ " already exist.");
         }
-        System.out.println(user.toString());
-        return user;
-       // return userRepository.saveAndFlush(user);
+        return userRepository.saveAndFlush(user);
     }
 
     @RequestMapping(value = "{email}",method = RequestMethod.DELETE)

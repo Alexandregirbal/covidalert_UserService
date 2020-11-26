@@ -6,23 +6,28 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import polytech.covidalert.controllers.UserController;
 import polytech.covidalert.models.User;
 
 
 import java.io.IOException;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
 import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import static org.mockito.Mockito.doReturn;
@@ -30,16 +35,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import static org.hamcrest.Matchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-
+@ContextConfiguration(classes = CovidalertApplication.class)
 @WebMvcTest(controllers = UserController.class)
 public class TestUserController {
 
@@ -85,19 +88,52 @@ public class TestUserController {
     public void testControllerCreateUser() throws Exception {
 
         User postUser = new User("jean", "Neymar", "20/08/2010", "jean@gmail.com", "0645789654", "azerty");
-        //User mockUser= new User(18,"jean","Neymar","20/08/2010","jean23@gmail.com","0645789654","azerty");
+        User mockUser= new User(18,"jean","Neymar","20/08/2010","jean23@gmail.com","0645789654","azerty");
         String result = mockMvc.perform(post("/covidalert/api/users")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(postUser)))
                 .andExpect(status().isCreated())
 
-                // .andExpect(jsonPath("$.email", is(mockUser.getEmail())))
-                //.andExpect(jsonPath("$.first_name", is(mockUser.getFirst_name())))
-                //.andExpect(jsonPath("$.last_name", is(mockUser.getLast_name())))
+                .andExpect(jsonPath("$.email", is(mockUser.getEmail())))
+                .andExpect(jsonPath("$.first_name", is(mockUser.getFirst_name())))
+                .andExpect(jsonPath("$.last_name", is(mockUser.getLast_name())))
                 .andReturn().getResponse().getContentAsString();
 
         System.out.println("RESULTAT :" + result);
     }
+
+    @Test
+    @DisplayName("Test Put User")
+    public void testControllerPutUser() throws Exception {
+
+        User putUser = new User("jean", "Neymar", "20/08/2010", "jean@gmail.com", "0645789654", "azerty");
+        User mockUser= new User(18,"jean","Neymar","20/08/2010","jean23@gmail.com","0645789654","azerty");
+        doReturn(mockUser).when(userController).getUserByEmail("jean@gmail.com");
+
+        String result = mockMvc.perform(put("/covidalert/api/users/{id}",1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(asJsonString(putUser)))
+                .andExpect(status().isOk())
+
+                .andExpect(jsonPath("$.email", is("test")))
+                .andExpect(jsonPath("$.first_name", is(mockUser.getFirst_name())))
+                .andExpect(jsonPath("$.last_name", is(mockUser.getLast_name())))
+                .andReturn().getResponse().getContentAsString();
+
+        System.out.println("RESULTAT :" + result);
+    }
+
+    @Test
+    @DisplayName("Test Delete User")
+    public void testControllerDeleteUser() throws Exception {
+
+        User mockUser= new User(18,"jean","Neymar","20/08/2010","jean23@gmail.com","0645789654","azerty");
+        mockMvc.perform(delete("/covidalert/api/users/{id}",1))
+                .andExpect(status().isOk());
+
+
+    }
+
 
 
     private static final Pattern DATE_PATTERN = Pattern.compile(
