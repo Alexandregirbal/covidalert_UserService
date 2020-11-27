@@ -48,11 +48,9 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public User create(@RequestBody final User user) {
+        // Si l'user existe le retourner
         if ( userRepository.findByEmail(user.getEmail()) != null){
-            User existingUser = userRepository.findByEmail(user.getEmail());
-            BeanUtils.copyProperties(user, existingUser, "user_id");
-            return userRepository.saveAndFlush(existingUser);
-            //throw new ResourceAlreadyExistsException(HttpStatus.INTERNAL_SERVER_ERROR, "User with email " + user.getEmail()+ " already exist.");
+           throw new ResourceAlreadyExistsException(HttpStatus.INTERNAL_SERVER_ERROR, "User with email " + user.getEmail()+ " already exist.");
         }
         return userRepository.saveAndFlush(user);
     }
