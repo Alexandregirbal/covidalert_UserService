@@ -8,7 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -42,8 +42,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
+
 @ContextConfiguration(classes = CovidalertApplication.class)
 @WebMvcTest(controllers = UserController.class)
+@AutoConfigureMockMvc
 public class TestUserController {
 
     @Autowired
@@ -93,7 +95,6 @@ public class TestUserController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(asJsonString(postUser)))
                 .andExpect(status().isCreated())
-
                 .andExpect(jsonPath("$.email", is(mockUser.getEmail())))
                 .andExpect(jsonPath("$.first_name", is(mockUser.getFirst_name())))
                 .andExpect(jsonPath("$.last_name", is(mockUser.getLast_name())))
@@ -168,6 +169,7 @@ public class TestUserController {
             assertTrue(matcher.matches());
         }
     }
+
 
 
 

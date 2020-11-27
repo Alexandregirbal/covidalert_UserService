@@ -14,6 +14,7 @@ import polytech.covidalert.models.UserRepository;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/covidalert/api/users")
 public class UserController {
     @Autowired
@@ -48,7 +49,10 @@ public class UserController {
     @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public User create(@RequestBody final User user) {
         if ( userRepository.findByEmail(user.getEmail()) != null){
-            throw new ResourceAlreadyExistsException(HttpStatus.INTERNAL_SERVER_ERROR, "User with email " + user.getEmail()+ " already exist.");
+            User existingUser = userRepository.findByEmail(user.getEmail());
+            BeanUtils.copyProperties(user, existingUser, "user_id");
+            return userRepository.saveAndFlush(existingUser);
+            //throw new ResourceAlreadyExistsException(HttpStatus.INTERNAL_SERVER_ERROR, "User with email " + user.getEmail()+ " already exist.");
         }
         return userRepository.saveAndFlush(user);
     }
@@ -61,17 +65,8 @@ public class UserController {
 
     @RequestMapping(value="{email}",method = RequestMethod.PUT)
     public User update(@PathVariable String email, @RequestBody User user) {
-        // TODO: Ajouter ici une validation si tous
-        // les champs ont ete passes
-        if (email !=null && user.getEmail()!=null && user.getFirst_name()!=null &&
-            user.getLast_name()!=null && user.getPassword()!=null && user.getPhone_number()!=null) {
-            // Sinon, retourner une erreur 400 (Bad Payload)
-            User existingUser = userRepository.findByEmail(email);
-            BeanUtils.copyProperties(user, existingUser, "user_id");
-            return userRepository.saveAndFlush(existingUser);
-        }
-        else{
-            throw new FormNotCompletedException(HttpStatus.INTERNAL_SERVER_ERROR, "Form not fully completed");
-        }
+        User existingUser = userRepository.findByEmail(email);
+        BeanUtils.copyProperties(user, existingUser, "user_id");
+        return userRepository.saveAndFlush(existingUser);
     }
 }
